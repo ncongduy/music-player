@@ -1,8 +1,7 @@
 //Improve app
-//1. Hanlde when change current playback position more smoothier.
+//1. Hanlde when change current playback position more smoothier. - Done
 //2. When choosing random feature, we don't want repeat immediately, we want
 // repeat after a cycle.
-//3. Handle when click option button.
 
 //Declare global variable
 const $ = document.querySelector.bind(document);
@@ -79,6 +78,7 @@ const app = {
 	isPlaying: false,
 	isRandom: false,
 	isRepeat: false,
+	isSeek: false,
 	configure: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
 	songs,
 	setConfigure(key, value) {
@@ -167,20 +167,34 @@ const app = {
 		});
 
 		//when the current playback position has changed
-		audio.addEventListener('timeupdate', () => {
-			if (audio.duration) {
+		const updateProgress = () => {
+			if (audio.duration && !_this.isSeek) {
 				const percentProgress = Math.floor(
 					(audio.currentTime / audio.duration) * 100
 				);
 
 				progress.value = percentProgress;
+			} else if (_this.isSeek) {
+				const seekTime = (progress.value * audio.duration) / 100;
+				audio.currentTime = seekTime;
+			}
+		};
+
+		audio.addEventListener('timeupdate', updateProgress);
+
+		//Hanlde when change current playback position
+		progress.addEventListener('mousedown', () => {
+			_this.isSeek = true;
+			if (_this.isSeek) {
+				audio.pause();
 			}
 		});
 
-		//Hanlde when change current playback position
-		progress.addEventListener('change', (evt) => {
-			const seekTime = (evt.target.value * audio.duration) / 100;
-			audio.currentTime = seekTime;
+		progress.addEventListener('mouseup', () => {
+			_this.isSeek = false;
+			if (!_this.isSeek) {
+				audio.play();
+			}
 		});
 
 		//When click next button
