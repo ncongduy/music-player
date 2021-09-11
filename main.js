@@ -101,9 +101,9 @@ const app = {
 				<h3 class="title">${song.name}</h3>
 				<p class="author">${song.singer}</p>
 			</div>
-			<div class="option">
+			<!-- <div class="option">
 				<i class="fas fa-ellipsis-h"></i>
-			</div>
+			</div> -->
 		</div>
 		`
 		);
@@ -166,7 +166,7 @@ const app = {
 			cdThumbAnimate.pause();
 		});
 
-		//when the current playback position has changed
+		//Update 'progress' element
 		const updateProgress = () => {
 			if (audio.duration && !_this.isSeek) {
 				const percentProgress = Math.floor(
@@ -182,7 +182,7 @@ const app = {
 
 		audio.addEventListener('timeupdate', updateProgress);
 
-		//Hanlde when change current playback position
+		//When change position of 'progress' element
 		progress.addEventListener('mousedown', () => {
 			_this.isSeek = true;
 			if (_this.isSeek) {
