@@ -1,7 +1,7 @@
 //Improve app
 //1. Hanlde when change current playback position more smoothier. - Done
 //2. When choosing random feature, we don't want repeat immediately, we want
-// repeat after a cycle.
+// repeat after a cycle. - Done
 
 //Declare global variable
 const $ = document.querySelector.bind(document);
@@ -75,6 +75,7 @@ const songs = [
 
 const app = {
 	currentIndex: 0,
+	listenedSongsIndex: [0],
 	isPlaying: false,
 	isRandom: false,
 	isRepeat: false,
@@ -310,11 +311,15 @@ const app = {
 		this.loadCurrentSong();
 	},
 	randomSong() {
+		if (this.listenedSongsIndex.length === this.songs.length) {
+			this.listenedSongsIndex = [];
+		}
 		let newIndex;
 		do {
 			newIndex = Math.floor(Math.random() * this.songs.length);
-		} while (newIndex === this.currentIndex);
+		} while (this.listenedSongsIndex.includes(newIndex));
 
+		this.listenedSongsIndex.push(newIndex);
 		this.currentIndex = newIndex;
 		this.loadCurrentSong();
 	},
