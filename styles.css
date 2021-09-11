@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #ec1f55;
+    --primary-color: #115293;
     --text-color: #333;
 }
 
@@ -94,6 +94,11 @@ header h2 {
 
 .control .btn.active {
     color: var(--primary-color);
+}
+
+.control .btn.btn-repeat.active,
+.control .btn.btn-random.active{
+    color: #f44336;
 }
 
 .control .btn-toggle-play {
